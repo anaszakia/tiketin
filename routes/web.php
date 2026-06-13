@@ -8,6 +8,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\EventCategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AttendeeController;
+use App\Http\Controllers\EventOrganizerController;
+use App\Http\Controllers\EventRoleController;
+use App\Http\Controllers\EventTicketController;
+use App\Http\Controllers\EventStaffController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CheckinController;
+
 
 // ── Auth (guest) ──────────────────────────────────────────────────────────────
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -42,5 +52,14 @@ Route::middleware(['auth.custom', 'auto.logout'])->group(function () {
     // ── Event Categories ──────────────────────────────────────────────────────
     Route::resource('event_categories', EventCategoryController::class);
     Route::resource('events', EventController::class);
+    Route::resource('orders', OrderController::class);
+    Route::resource('attendees', AttendeeController::class);
+    Route::resource('event_organizers', EventOrganizerController::class);
+    Route::resource('event_roles', EventRoleController::class);
+    Route::resource('event_tickets', EventTicketController::class);
+    Route::resource('event_staffs', EventStaffController::class);
+    Route::resource('order_items', OrderItemController::class);
+    Route::resource('payments', PaymentController::class);
+    Route::resource('checkins', CheckinController::class);
 
 });
