@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\EventCategoryController;
+use App\Http\Controllers\EventController;
 
 // ── Auth (guest) ──────────────────────────────────────────────────────────────
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -40,5 +41,6 @@ Route::middleware(['auth.custom', 'auto.logout'])->group(function () {
 
     // ── Event Categories ──────────────────────────────────────────────────────
     Route::resource('event_categories', EventCategoryController::class);
+    Route::resource('events', EventController::class);
 
 });
