@@ -23,7 +23,7 @@ class EventOrganizerController extends Controller
 
         $users = User::orderBy('name')->get();
 
-        return view('admin.event_organizers.create', compact('eventOrganizer', 'users'));
+        return view('admin.event_organizers.create', compact('users'));
     }
 
     public function store(Request $request)
@@ -33,9 +33,9 @@ class EventOrganizerController extends Controller
         $request->validate([
             'user_id' => 'nullable|exists:users,id',
             'organizer_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
             'address' => 'nullable|string',
-            'npwp' => 'required|string|max:255',
+            'npwp' => 'nullable|string|max:255',
             'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -79,9 +79,9 @@ class EventOrganizerController extends Controller
         $request->validate([
             'user_id' => 'nullable|exists:users,id',
             'organizer_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
             'address' => 'nullable|string',
-            'npwp' => 'required|string|max:255',
+            'npwp' => 'nullable|string|max:255',
             'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 

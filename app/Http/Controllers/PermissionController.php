@@ -10,8 +10,13 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = Permission::with('roles')
+            ->when(request('search'), fn($q, $s) =>
+                $q->where('name', 'like', "%$s%")
+                ->orWhere('slug', 'like', "%$s%")
+            )
             ->orderBy('name')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('admin.permissions.index', compact('permissions'));
     }

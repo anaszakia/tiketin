@@ -54,6 +54,10 @@
                             <td>{{ $event->description ?? '-' }}</td>
                         </tr>
                         <tr>
+                            <td class="text-muted" width="200">Ringkasan</td>
+                            <td>{{ $event->short_description ?? '-' }}</td>
+                        </tr>
+                        <tr>
                             <td class="text-muted" width="200">Banner</td>
                             <td>
                                 @if($event->banner)
@@ -68,6 +72,28 @@
                             <td>{{ $event->location ?? '-' }}</td>
                         </tr>
                         <tr>
+                            <td class="text-muted" width="200">Venue</td>
+                            <td>{{ $event->venue_name ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Alamat Detail</td>
+                            <td>{{ $event->address_detail ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Kota/Provinsi</td>
+                            <td>{{ trim(($event->city ?? '') . ' ' . ($event->province ?? '')) ?: '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Maps</td>
+                            <td>
+                                @if($event->map_url)
+                                    <a href="{{ $event->map_url }}" target="_blank" rel="noopener">Buka Maps</a>
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="text-muted" width="200">Start Date</td>
                             <td>{{ $event->start_date ?? '-' }}</td>
                         </tr>
@@ -78,6 +104,48 @@
                         <tr>
                             <td class="text-muted" width="200">Capacity</td>
                             <td>{{ $event->capacity ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Minimal Usia</td>
+                            <td>{{ $event->minimum_age !== null ? $event->minimum_age . ' tahun' : '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Rundown</td>
+                            <td>{!! nl2br(e($event->rundown ?? '-')) !!}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Syarat</td>
+                            <td>{!! nl2br(e($event->terms ?? '-')) !!}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Refund</td>
+                            <td>{!! nl2br(e($event->refund_policy ?? '-')) !!}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Kontak</td>
+                            <td>
+                                {{ $event->contact_name ?? '-' }}
+                                @if($event->contact_phone)
+                                    <div class="text-muted small">{{ $event->contact_phone }}</div>
+                                @endif
+                                @if($event->contact_email)
+                                    <div class="text-muted small">{{ $event->contact_email }}</div>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted" width="200">Gallery</td>
+                            <td>
+                                @if(! empty($event->gallery_images))
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach($event->gallery_images as $path)
+                                            <img src="{{ minio_url($path) }}" alt="Gallery" class="rounded object-fit-cover border" style="width:120px; height:80px;">
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td class="text-muted" width="200">Status</td>
@@ -92,6 +160,46 @@
                             <td>{{ tgl_jam($event->updated_at) }}</td>
                         </tr>
             </table>
+        </div>
+    </div>
+
+    <div class="card card-lg mt-4">
+        <div class="card-body">
+            <h6 class="mb-4 text-muted text-uppercase" style="font-size:11px; letter-spacing:.05em;">
+                Kategori Tiket
+            </h6>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-centered mb-0">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Harga</th>
+                            <th>Kuota</th>
+                            <th>Terjual</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($event->tickets as $ticket)
+                            <tr>
+                                <td>
+                                    <div class="fw-semibold">{{ $ticket->name }}</div>
+                                    <div class="text-muted small">{{ $ticket->description }}</div>
+                                </td>
+                                <td>Rp{{ number_format($ticket->price, 0, ',', '.') }}</td>
+                                <td>{{ $ticket->quota }}</td>
+                                <td>{{ $ticket->quota_sold }}</td>
+                                <td><span class="badge bg-secondary">{{ $ticket->status }}</span></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">Belum ada kategori tiket.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

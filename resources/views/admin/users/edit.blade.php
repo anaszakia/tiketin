@@ -20,7 +20,7 @@
         </a>
     </div>
 
-    <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
+    <form id="userUpdateForm" action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -188,14 +188,11 @@
                             <p class="text-muted small mb-3">
                                 Menghapus user akan menghapus semua data terkait termasuk foto profil.
                             </p>
-                            <form action="{{ route('users.destroy', $user) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="btn btn-danger w-100"
-                                    data-confirm="Yakin hapus user {{ $user->name }}? Tindakan ini tidak bisa dibatalkan!">
-                                    <i class="ti ti-trash me-1"></i> Hapus User Ini
-                                </button>
-                            </form>
+                            <button type="button" class="btn btn-danger w-100"
+                                form="userDeleteForm"
+                                data-confirm="Yakin hapus user {{ $user->name }}? Tindakan ini tidak bisa dibatalkan!">
+                                <i class="ti ti-trash me-1"></i> Hapus User Ini
+                            </button>
                         </div>
                     </div>
                 @endif
@@ -203,6 +200,13 @@
 
         </div>
     </form>
+
+    @if(can('users.delete') && $user->id !== session('user_id'))
+        <form id="userDeleteForm" action="{{ route('users.destroy', $user) }}" method="POST" class="d-none">
+            @csrf
+            @method('DELETE')
+        </form>
+    @endif
 
 @endsection
 

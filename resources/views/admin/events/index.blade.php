@@ -30,9 +30,9 @@
                             <th>#</th>
                             <th>Organizer</th>
                             <th>Category</th>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Description</th>
+                            <th>Event</th>
+                            <th>Tiket</th>
+                            <th>Status</th>
                             <th>Dibuat</th>
                             <th>Aksi</th>
                         </tr>
@@ -43,9 +43,24 @@
                                 <td>{{ $events->firstItem() + $loop->index }}</td>
                                 <td>{{ $event->organizer->organizer_name ?? '-' }}</td>
                                 <td>{{ $event->category->name ?? '-' }}</td>
-                                <td>{{ $event->name ?? '-' }}</td>
-                                <td>{{ $event->slug ?? '-' }}</td>
-                                <td>{{ $event->description ?? '-' }}</td>
+                                <td>
+                                    <div class="fw-semibold">{{ $event->name ?? '-' }}</div>
+                                    <div class="text-muted small">{{ $event->venue_name ?? $event->location ?? '-' }}</div>
+                                </td>
+                                <td>
+                                    @if($event->tickets->isNotEmpty())
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach($event->tickets->take(3) as $ticket)
+                                                <span class="badge bg-light text-dark border">
+                                                    {{ $ticket->name }} - Rp{{ number_format($ticket->price, 0, ',', '.') }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td><span class="badge bg-secondary">{{ $event->status }}</span></td>
                                 <td>{{ tgl_indo($event->created_at) }}</td>
                                 <td>
                                     <div class="d-flex gap-2">

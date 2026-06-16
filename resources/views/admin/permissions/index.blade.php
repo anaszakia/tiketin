@@ -21,6 +21,21 @@
 
     <div class="card card-lg">
         <div class="card-body p-0">
+            {{-- Taruh di dalam card-body sebelum table-responsive --}}
+            <div class="p-3 border-bottom">
+                <form method="GET" action="{{ route('permissions.index') }}" class="d-flex gap-2">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="ti ti-search"></i></span>
+                        <input type="text" name="search" class="form-control"
+                            placeholder="Cari nama atau slug..."
+                            value="{{ request('search') }}" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cari</button>
+                    @if(request('search'))
+                        <a href="{{ route('permissions.index') }}" class="btn btn-white">Reset</a>
+                    @endif
+                </form>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover table-centered mb-0">
                     <thead>
@@ -81,10 +96,14 @@
             </div>
 
             @if ($permissions->hasPages())
-                <div class="px-4 py-3 border-top">
-                    {{ $permissions->links() }}
-                </div>
-            @endif
+            <div class="px-4 py-3 border-top d-flex align-items-center justify-content-between">
+                <small class="text-muted">
+                    Showing {{ $permissions->firstItem() }}–{{ $permissions->lastItem() }}
+                    of {{ $permissions->total() }} results
+                </small>
+                {{ $permissions->appends(request()->query())->links() }}
+            </div>
+        @endif
         </div>
     </div>
 

@@ -68,7 +68,10 @@
                     e.preventDefault();
 
                     const message = el.getAttribute('data-confirm') || 'Yakin ingin melanjutkan?';
-                    const form    = el.closest('form');
+                    const formId  = el.getAttribute('form');
+                    const form    = el.closest('form') || (formId ? document.getElementById(formId) : null);
+
+                    if (!form) return;
 
                     Swal.fire({
                         title: 'Konfirmasi',
