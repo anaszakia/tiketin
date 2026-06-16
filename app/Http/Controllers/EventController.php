@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\EventOrganizer;
 use App\Models\EventCategory;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class EventController extends Controller
 {
@@ -22,10 +23,10 @@ class EventController extends Controller
     {
         abort_unless(can('events.create'), 403);
 
-        $eventOrganizers = EventOrganizer::orderBy('name')->get();
+        $eventOrganizers = EventOrganizer::orderBy('organizer_name')->get();
         $eventCategories = EventCategory::orderBy('name')->get();
 
-        return view('admin.events.create', compact('event', 'eventOrganizers', 'eventCategories'));
+        return view('admin.events.create', compact('eventOrganizers', 'eventCategories'));
     }
 
     public function store(Request $request)
@@ -33,17 +34,17 @@ class EventController extends Controller
         abort_unless(can('events.create'), 403);
 
         $request->validate([
-            'organizer_id' => 'nullable|exists:organizers,id',
-            'category_id' => 'nullable|exists:categories,id',
+            'organizer_id' => 'required|exists:event_organizers,id',
+            'category_id' => 'nullable|exists:event_categories,id',
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:events,slug',
             'description' => 'nullable|string',
             'banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'location' => 'required|string|max:255',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'capacity' => 'required|integer|min:0',
-            'status' => 'required|string',
+            'status' => ['required', Rule::in(['draft', 'pending', 'published', 'rejected', 'finished', 'cancelled'])],
         ]);
 
         $bannerPath = null;
@@ -79,7 +80,7 @@ class EventController extends Controller
     {
         abort_unless(can('events.edit'), 403);
 
-        $eventOrganizers = EventOrganizer::orderBy('name')->get();
+        $eventOrganizers = EventOrganizer::orderBy('organizer_name')->get();
         $eventCategories = EventCategory::orderBy('name')->get();
 
         return view('admin.events.edit', compact('event', 'eventOrganizers', 'eventCategories'));
@@ -90,17 +91,17 @@ class EventController extends Controller
         abort_unless(can('events.edit'), 403);
 
         $request->validate([
-            'organizer_id' => 'nullable|exists:organizers,id',
-            'category_id' => 'nullable|exists:categories,id',
+            'organizer_id' => 'required|exists:event_organizers,id',
+            'category_id' => 'nullable|exists:event_categories,id',
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
+            'slug' => ['required', 'string', 'max:255', Rule::unique('events', 'slug')->ignore($event->id)],
             'description' => 'nullable|string',
             'banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'location' => 'required|string|max:255',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'capacity' => 'required|integer|min:0',
-            'status' => 'required|string',
+            'status' => ['required', Rule::in(['draft', 'pending', 'published', 'rejected', 'finished', 'cancelled'])],
         ]);
 
         $data = [

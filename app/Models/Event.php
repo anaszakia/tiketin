@@ -10,12 +10,24 @@ class Event extends Model
 
     public function eventOrganizer()
     {
-        return $this->belongsTo(EventOrganizer::class);
+        return $this->belongsTo(EventOrganizer::class, 'organizer_id');
     }
+
+    public function organizer()
+    {
+        return $this->eventOrganizer();
+    }
+
     public function eventCategory()
     {
-        return $this->belongsTo(EventCategory::class);
+        return $this->belongsTo(EventCategory::class, 'category_id');
     }
+
+    public function category()
+    {
+        return $this->eventCategory();
+    }
+
     public function getBannerUrlAttribute(): string
     {
         return minio_url($this->banner);

@@ -12,7 +12,7 @@ class EventOrganizer extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function get" . Str::studly(logo) . "UrlAttribute(): string
+    public function getLogoUrlAttribute(): string
     {
         return minio_url($this->logo);
     }

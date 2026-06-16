@@ -28,8 +28,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Organizer Id</th>
-                            <th>Category Id</th>
+                            <th>Organizer</th>
+                            <th>Category</th>
                             <th>Name</th>
                             <th>Slug</th>
                             <th>Description</th>
@@ -41,7 +41,7 @@
                         @forelse ($events as $event)
                             <tr>
                                 <td>{{ $events->firstItem() + $loop->index }}</td>
-                                <td>{{ $event->organizer->name ?? '-' }}</td>
+                                <td>{{ $event->organizer->organizer_name ?? '-' }}</td>
                                 <td>{{ $event->category->name ?? '-' }}</td>
                                 <td>{{ $event->name ?? '-' }}</td>
                                 <td>{{ $event->slug ?? '-' }}</td>

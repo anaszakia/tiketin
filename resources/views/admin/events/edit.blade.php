@@ -33,13 +33,13 @@
                         </h6>
 
                         <div class="mb-4">
-                            <label class="form-label">Organizer Id</label>
+                            <label class="form-label">Organizer <span class="text-danger">*</span></label>
                             <select name="organizer_id" class="form-select @error('organizer_id') is-invalid @enderror">
-                                <option value="">-- Pilih Organizer Id --</option>
-                                @foreach ($organizers as $item)
+                                <option value="">-- Pilih Organizer --</option>
+                                @foreach ($eventOrganizers as $item)
                                     <option value="{{ $item->id }}"
                                         {{ old('organizer_id', $event->organizer_id) == $item->id ? 'selected' : '' }}>
-                                        {{ $item->name }}
+                                        {{ $item->organizer_name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -49,10 +49,10 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label">Category Id</label>
+                            <label class="form-label">Category</label>
                             <select name="category_id" class="form-select @error('category_id') is-invalid @enderror">
-                                <option value="">-- Pilih Category Id --</option>
-                                @foreach ($categories as $item)
+                                <option value="">-- Pilih Category --</option>
+                                @foreach ($eventCategories as $item)
                                     <option value="{{ $item->id }}"
                                         {{ old('category_id', $event->category_id) == $item->id ? 'selected' : '' }}>
                                         {{ $item->name }}
@@ -140,10 +140,13 @@
                         <div class="mb-4">
                             <label class="form-label">Status <span class="text-danger">*</span></label>
                             <select name="status" class="form-select @error('status') is-invalid @enderror">
-                                {{-- Sesuaikan opsi dengan enum di database --}}
                                 <option value="">-- Pilih Status --</option>
-                                <option value="active" {{ old('status', $event->status) == 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="inactive" {{ old('status', $event->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                <option value="draft" {{ old('status', $event->status) == 'draft' ? 'selected' : '' }}>Draft</option>
+                                <option value="pending" {{ old('status', $event->status) == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="published" {{ old('status', $event->status) == 'published' ? 'selected' : '' }}>Published</option>
+                                <option value="rejected" {{ old('status', $event->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                <option value="finished" {{ old('status', $event->status) == 'finished' ? 'selected' : '' }}>Finished</option>
+                                <option value="cancelled" {{ old('status', $event->status) == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                             </select>
                             @error('status')
                                 <div class="invalid-feedback">{{ $message }}</div>

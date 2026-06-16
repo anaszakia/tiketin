@@ -34,11 +34,11 @@
             </h6>
             <table class="table table-borderless mb-0">
                         <tr>
-                            <td class="text-muted" width="200">Organizer Id</td>
-                            <td>{{ $event->organizer->name ?? '-' }}</td>
+                            <td class="text-muted" width="200">Organizer</td>
+                            <td>{{ $event->organizer->organizer_name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <td class="text-muted" width="200">Category Id</td>
+                            <td class="text-muted" width="200">Category</td>
                             <td>{{ $event->category->name ?? '-' }}</td>
                         </tr>
                         <tr>
