@@ -17,7 +17,12 @@ use App\Http\Controllers\EventStaffController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CheckinController;
+use App\Http\Controllers\FrontendController;
 
+// ── Frontend Customer ────────────────────────────────────────────────────────
+Route::get('/', [FrontendController::class, 'home'])->name('front.home');
+Route::get('/event/{slug}', [FrontendController::class, 'show'])->name('front.events.show');
+Route::get('/event/{slug}/checkout', [FrontendController::class, 'checkout'])->name('front.checkout');
 
 // ── Auth (guest) ──────────────────────────────────────────────────────────────
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -33,7 +38,6 @@ Route::get('/otp-verification', fn() => view('auth.otp-verification'))->name('ot
 // ── Protected ─────────────────────────────────────────────────────────────────
 Route::middleware(['auth.custom', 'auto.logout'])->group(function () {
 
-    Route::get('/', fn() => redirect()->route('dashboard'));
     Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
 
     Route::post('/keep-alive', function () {
